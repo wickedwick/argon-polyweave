@@ -1,3 +1,4 @@
+import { providers } from 'ethers'
 import Web3 from 'web3'
 declare var window: any
 
@@ -20,5 +21,34 @@ const getWeb3 = (): Promise<Web3> => new Promise((resolve, reject) => {
     }
   })
 })
+
+export const connectWeb3 = async (connector: any) => {
+  const p = new providers.Web3Provider(connector);
+  await p._ready();
+  return p
+}
+
+export const createProvider = async (c: any) => {
+  if (!window?.ethereum?.isMetaMask) return;
+  await window.ethereum.enable();
+  const provider = await connectWeb3(window.ethereum);
+  const chainId = `0x${c.chainId.toString(16)}`
+  try {
+    await window.ethereum.request({
+      method: 'wallet_switchEthereumChain',
+      params: [{ chainId }],
+    })
+  } catch (e: any) {
+    if (e.code === 4902) {
+      await window.ethereum.request({
+        method: 'wallet_addEthereumChain',
+        params: [{
+          chainId, rpcUrls: c.rpcUrls, chainName: c.chainName
+        }],
+      });
+    }
+  }
+  return provider;
+}
 
 export default getWeb3
