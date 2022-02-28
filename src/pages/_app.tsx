@@ -12,7 +12,7 @@ declare var window: any
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const [web3, setWeb3] = useState<Web3 | null>(null)
-  const [provider, setProvider] = useState<Web3Provider | undefined>(undefined)
+  const [provider, setProvider] = useState<Web3Provider | undefined | void>(undefined)
   const [bundler, setBundler] = useState<WebBundlr>()
   const [address, setAddress] = useState<string>()
   const [balance, setBalance] = useState<string>()
@@ -66,6 +66,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         Connect to Bundlr
       </button>
       <button
+        disabled={!provider} 
         onClick={async () => {
           address &&
             bundler!
@@ -73,9 +74,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               .then((res: BigNumber) => {
                 setBalance(res.toString())
               })
-          //await toggleRefresh()
         }}
-
       >
         Get Matic Balance
       </button>
