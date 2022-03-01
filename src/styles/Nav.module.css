@@ -1,0 +1,12 @@
+.menu {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: left;
+  background-color: #f2f2f2;
+}
+
+.menuItem {
+  padding: 1.5rem 1rem;
+  font-size: 1.5rem;
+}
