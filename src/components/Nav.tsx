@@ -2,22 +2,13 @@ import { BigNumber } from 'bignumber.js'
 import Link from 'next/link'
 import { useContext, useState } from 'react'
 import { BundlrContext } from '../context/BundlrContext'
-import initBundlr from '../services/bundlr'
+import initBundlr, { currency } from '../services/bundlr'
 import { createProvider } from '../services/web3'
 import styles from '../styles/Nav.module.css'
 
 const Nav = (): JSX.Element => {
   const [showControls, setShowControls] = useState(false)
   const { provider, setProvider, bundlr, setBundlr, address, setAddress, balance, setBalance } = useContext(BundlrContext)
-
-  const currency = {
-    providers: ["MetaMask"],
-    opts: {
-      chainId: 137,
-      chainName: 'Polygon Mainnet',
-      rpcUrls: ["https://polygon-rpc.com"],
-    },
-  }
 
   const initProvider = async () => {
     if (provider) {
@@ -49,7 +40,7 @@ const Nav = (): JSX.Element => {
             </Link>
           </li>
           <li className={styles.menuItem}>
-            <button className="text-blue hover:text-blue" onClick={() => setShowControls(true)}>{address ? 'Logout' : 'Login'}</button>
+            <button className="text-blue hover:text-blue" onClick={() => setShowControls(true)}>{provider && address ? 'Disconnect' : 'Connect'}</button>
           </li>
         </ul>
       </nav>
